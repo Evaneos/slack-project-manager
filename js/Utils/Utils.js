@@ -67,6 +67,25 @@ SPM.Utils = {
         return desc.replace(/[^\n]\n[^\n]/g, function(str) {
             return str[0] + "\n\n" + str[2];
         }, "g");
+    },
+
+    onDomChanged: function(selector, callback) {
+
+        // select the target node
+        var target = document.querySelector(selector);
+
+        // create an observer instance
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                callback();
+            }.bind(this));
+        }.bind(this));
+
+        // configuration of the observer:
+        var config = { attributes: false, childList: true, characterData: false };
+
+        // pass in the target node, as well as the observer options
+        observer.observe(target, config);
     }
 
 

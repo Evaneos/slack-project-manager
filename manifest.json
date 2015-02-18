@@ -22,6 +22,7 @@
                 "vendors/moment-with-locales.js",
                 "/js/Utils/CodeInjector.js",
                 "/js/Utils/Utils.js",
+                "/js/Utils/UrlChanged.js",
 
                 "/js/Models/BoardManager.js",
                 "/js/Models/ChannelManager.js",
@@ -41,6 +42,8 @@
 
                 "/js/apps/MyProjects/MyProjectsInitializer.js",
 
+                "/js/apps/ToggleMenu/ToggleMenuInitializer.js",
+
                 "/js/apps/CheckTrelloSlack/CheckTrelloSlackInitializer.js",
 
                 "main.js"
@@ -54,6 +57,7 @@
         "js/ViewHelpers/MenuSectionViewHelper/menuSectionInjectedCode.js",
 
         "js/apps/ProjectPanel/panelInjectedCode.js",
+        "js/apps/ToggleMenu/toggleMenuInjectedCode.js",
         "js/apps/ProjectPanel/views/panel.ejs"
     ]
 }

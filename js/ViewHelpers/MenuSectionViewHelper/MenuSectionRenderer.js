@@ -3,34 +3,42 @@ SPM.ViewHelpers = SPM.ViewHelpers || {};
 
 SPM.ViewHelpers.SectionRenderer = {
 
-    codeInserted: false,
+    sections: [],
 
     addSection: function(id, title, channels, isProjectSection) {
+        // First use, initialize
+        if (this.sections.length == 0) {
+            this._initialize();
+        }
+
+        // create object section
+        // @todo replace by class
         var section = {};
         section.title = title;
         section.isProjectSection = isProjectSection;
         section.channels = channels;
         section.id = id;
-        this.initTemplate();
-        if (!this.codeInserted) {
-            SPM.CodeInjector.injectFile("js/ViewHelpers/MenuSectionViewHelper/menuSectionInjectedCode.js");
-            this.codeInserted = true;
-        }
+
+        // add it to the sections
+        this.sections.push(section);
+
+        // add dom
         this.addSectionDivIfNotExist(section);
-        this.initRenderLoop(function() {
-            this.update(section);
+    },
+
+    _initialize: function() {
+        this.initTemplate();
+        SPM.CodeInjector.injectFile("js/ViewHelpers/MenuSectionViewHelper/menuSectionInjectedCode.js");
+
+        SPM.Utils.onDomChanged("#channel-list", function() {
+            this.update();
         }.bind(this));
     },
 
-    timerUpdate: null,
-    initRenderLoop: function(callback) {
-        this.timerUpdate = setInterval(function() {
-            callback();
-        }.bind(this), 100);
-    },
-
     update: function(section) {
-        this.updateMenuItem(section);
+        for (var i = 0 ; i < this.sections.length ; i++) {
+            this.updateMenuItem(this.sections[i]);
+        }
     },
 
 
@@ -56,7 +64,8 @@ SPM.ViewHelpers.SectionRenderer = {
             if ($(this)[0].outerHTML != $("#channel-list .channel_" + id + ", #starred-list .channel_"+id)[0].outerHTML) {
                 $(this).replaceWith($("#channel-list .channel_" + id + ",#starred-list .channel_"+id).clone());
             }
-        })
+        });
+        SPM.CodeInjector.injectCode("TS.client.channel_pane.makeSureActiveChannelIsInView();");
     },
 
     template: null,

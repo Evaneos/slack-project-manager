@@ -1,4 +1,4 @@
-<div id="file_list_container">
+<div id="project_container">
     <div class="heading">
         <a href="<%= this.project.url %>" id="file_list_heading" class="menu_heading">
             <span class="heading_label"><%= project.name %></span>
@@ -11,7 +11,7 @@
                 <% if (member.avatarHash === null) { %>
                     <div class="SPM-member-initials"> <%= member.fullName.match(/\b\w/g).join('') %> </div>
                 <% } else {%>
-                    <img class="SPM-member-avatar" src="https://trello-avatars.s3.amazonaws.com/<%= member.avatarHash %>/50.png" alt="<% member.name %>" title="<% member.name %>">
+                    <img class="SPM-member-avatar" src="https://trello-avatars.s3.amazonaws.com/<%= member.avatarHash %>/50.png" alt="<% member.fullName %>" title="<% member.fullName %>">
                 <% } %>
                 </div>
             <% }) %>

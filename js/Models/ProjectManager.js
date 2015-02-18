@@ -87,8 +87,10 @@ SPM.Models.ProjectManager = {
             "card_members": true
         })
         .then(function(result) {
-
             var cards = result.cards;
+            cards = _.filter(cards, function(project) {
+                return !project.closed;
+            })
             var card;
             if (! cards.length) {
                 card = null;
@@ -125,7 +127,7 @@ SPM.Models.ProjectManager = {
                     return project.slack == channelName
                 });
                 if (projects.length > 1) {
-                    console.warn("More than one Trello cards found for the project " + channelName, cards);
+                    console.warn("More than one Trello cards found for the project " + channelName, project.cards);
                 }
                 if (projects.length == 0) {
                     console.warn("No Trello cards found for the project " + channelName);

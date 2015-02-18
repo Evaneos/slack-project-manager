@@ -27,24 +27,26 @@ SPM.PanelRenderer = {
         this.boards = boards;
         return this;
     },
-
+    initialized: false,
     render: function(project) {
+        if (!this.initialized) {
+            this.initTemplate();
+
+            this.initialized = true;
+        }
         this.reset();
-        this.initTemplate();
-
         this.project = project;
+        if (this.project) {
+            this.addTitle(SPM.Utils.getDueDate(this.project.due), this.project.name);
+        }
 
-        SPM.Utils
-            .waitUntil(titleIsHere)
-            .then(function () {
-                this.addTitle(SPM.Utils.getDueDate(this.project.due), this.project.name);
-            }.bind(this))
+
 
         SPM.Utils
             .waitUntil(panelIsHere)
             .then(function () {
                 this.addPanel();
-                this.openPanel();
+                //this.openPanel();
             }.bind(this))
     },
 
@@ -75,10 +77,11 @@ SPM.PanelRenderer = {
     },
     titleDiv: null,
     addTitle: function(deadline, title) {
+        $(".SPM-title").remove();
         var dom = '<span class="name SPM-title">' +
         ((deadline)? '<span class="SPM-deadline-title">' + deadline + '</span> ' : '') +
         title + '</span>';
-        this.titleDiv = $(dom).appendTo("#active_channel_name");
+        this.titleDiv = $(dom).insertAfter("#active_channel_name");
     },
     errorDiv: null,
     addError: function(message) {
@@ -99,9 +102,7 @@ SPM.PanelRenderer = {
     },
     openPanel: function () {
         SPM.CodeInjector.injectCode('\
-            if ($(".flex_pane_showing #flex_toggle").length == 0) {\
-                $("#flex_toggle").trigger("click");\
-            }\
+            TSM.openPanel();\
         ');
     },
     closePanel: function () {

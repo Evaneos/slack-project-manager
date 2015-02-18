@@ -35,7 +35,7 @@ $( "body" ).on( "click", ".SPM-no-slack", function() {
 */
 $( "body" ).on( "click", ".SPM-no-slack", function() {
 
-    alert($(this).nextAll('.SPM-error').attr('data-text'));
+    alert($(this).nextAll('.SPM-project-informations').children('.SPM-error').attr('data-text'));
 
 });
 

@@ -110,8 +110,17 @@
     display:none;
 }
 
-#active_channel_name .name.SPM-title {
+.name.SPM-title {
+    position: absolute;
+    top: 0px;
+    right: 61px;
     font-size: 16px;
+    line-height: 53px;
+    display: inline-block;
+    padding: 0 .5rem 0 1.5rem;
+    cursor: pointer;
+    color: #555459;
+    font-weight: 900;
 }
 
 #active_channel_name .name.SPM-title.error {
@@ -119,12 +128,13 @@
 }
 
 .SPM-message {
-    margin-bottom: 5px;
     border-radius: 3px;
     height: 5px;
     width: 5px;
-    margin-top: -13px;
-    margin-left: 7px;
+    position: absolute;
+    top: 7px;
+    margin: 0;
+    left: 8px;
 
 }
 
@@ -136,13 +146,27 @@
     background-color: orange;
 }
 
+.SPM-project-informations {
+    position: relative;
+    margin-top: -20px;
+    margin-bottom: 20px;
+    height: 0px;
+}
+
+.channel.active + .SPM-project-informations {
+    color: white;
+}
+
 .SPM-duedate {
     font-size: 10px;
-    margin-top: -19px;
-    margin-bottom: 4px;
     height: 18px;
     text-align: right;
-    margin-right: 1px;
+    position: absolute;
+    right: 5px;
+    top: 0px;
+    margin: 0;
+    transform: scale(1);
+    width: 25px;
 }
 
 .SPM-desc {
@@ -156,25 +180,58 @@
 }
 
 .SPM-emoji {
-    margin-top: -22px;
-    margin-left: -23px;
     transform: scale(0.7);
     width: 58px;
     text-align: right;
+    margin: -3px;
+    position: absolute;
+    left: 12px;
+    top: 2px;
+    width: 21px;
 }
 
-.SPM-not-show-all .channels_list_holder ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-message,
-.SPM-not-show-all .channels_list_holder ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-message + .SPM-duedate,
-.SPM-not-show-all .channels_list_holder ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-message + .SPM-duedate + .SPM-desc + .SPM-emoji
+.SPM-not-show-all .channels_list_holder ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-project-informations
  {
     display: none;
 }
 
 .SPM-not-show-all .channels_list_holder div#SPM-my_project:not(#starred_div)>ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads),
-.SPM-not-show-all .channels_list_holder div#SPM-my_project:not(#starred_div)>ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-message,
-.SPM-not-show-all .channels_list_holder div#SPM-my_project:not(#starred_div)>ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-message + .SPM-duedate,
-.SPM-not-show-all .channels_list_holder div#SPM-my_project:not(#starred_div)>ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-message + .SPM-duedate + .SPM-desc + .SPM-emoji
-
+.SPM-not-show-all .channels_list_holder div#SPM-my_project:not(#starred_div)>ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-project-informations
 {
     display: block;
+}
+
+.section_holder h2:not(#channels_header) {
+    pointer-events: none;
+}
+
+body:not(.SPM-not-show-all) .section_holder h2:not(#channels_header)::after {
+content: " -";
+cursor: pointer;
+pointer-events: all;
+}
+
+body:not(.SPM-not-show-all) .section_holder h2.SPM-plus:not(#channels_header)::after {
+    content: " +";
+}
+
+#flex_contents #project_container .heading {
+    border-bottom: 0;
+}
+
+.SPM-only-unread ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads),
+.SPM-only-unread ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-project-informations
+ {
+    display: none;
+}
+
+#col_channels.channels_list_holder .section_holder {
+    margin: 1rem 0 1rem;
+}
+
+.channels_list_holder ul:after {
+    content: "i";
+    height: 0px;
+    display: block;
+    overflow: hidden;
 }
