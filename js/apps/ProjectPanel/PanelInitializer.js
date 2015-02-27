@@ -24,10 +24,10 @@ SPM.Apps.ProjectPanel.PanelInitalizer = {
             });
     },
 
-    onChanged: function() {
+    onChanged: function(force) {
 
         var projectName = SPM.Utils.getProjectNameFromUrl(document.URL);
-        if (this.currentProjectName !== projectName) {
+        if (force || this.currentProjectName !== projectName) {
             this.currentProjectName = projectName;
             if (this.currentProjectName) {
                this.renderCurrentProject();
@@ -37,5 +37,9 @@ SPM.Apps.ProjectPanel.PanelInitalizer = {
             }
         }
 
+    },
+
+    updateProject: function(project) {
+        this.onChanged(true);
     }
 }

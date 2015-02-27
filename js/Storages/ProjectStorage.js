@@ -23,10 +23,17 @@ SPM.Storages.ProjectStorage = {
 		return projects;
 	},
 
-	getMyProjects: function (projects) {
-		return (this.myProjects)?
-			Promise.resolve(this.myProjects.map(function (projectId) { return this.projects[projectId] }.bind(this))):
-			Promise.reject("No data")
+	getProjectsByUser: function (user) {
+        var myProjects = _.filter(this.projects, function(project) {
+            return _.find(project.members, function(member) {
+                return member.id == user.id
+            }.bind(this));
+        }.bind(this));
+        if (myProjects.length > 0) {
+            return Promise.resolve(myProjects);
+        } else {
+            return Promise.reject("No data")
+        }
 	},
 
 	noProjectForChannel: function (channelName) {
@@ -35,7 +42,7 @@ SPM.Storages.ProjectStorage = {
 
 	getByChannelName: function (channelName) {
 		var projectId = this.projectsByChannel[channelName]
-		return (projectId === undefined)? 
+		return (projectId === undefined)?
 			Promise.reject("No data"):
 			Promise.resolve(this.projects[projectId]);
 	}

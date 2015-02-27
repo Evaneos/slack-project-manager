@@ -11,9 +11,10 @@ SPM.ViewHelpers.SectionRenderer = {
             this._initialize();
         }
 
+
         // create object section
         // @todo replace by class
-        var section = {};
+        var section = _.find(this.sections, function(s) { return s.id == id}) || {};
         section.title = title;
         section.isProjectSection = isProjectSection;
         section.channels = channels;
@@ -24,6 +25,8 @@ SPM.ViewHelpers.SectionRenderer = {
 
         // add dom
         this.addSectionDivIfNotExist(section);
+
+        this.updateMenuItem(section);
     },
 
     _initialize: function() {
@@ -43,12 +46,14 @@ SPM.ViewHelpers.SectionRenderer = {
 
 
     addSectionDivIfNotExist: function(section) {
-        var div = '<div id="' + section.id + '" class="SPM-section-added section_holder"></div>';
-        var index = 0;
-        if ($("#starred_div").length > 0) {
-            var index = 1;
+        if ($("#"+section.id).length == 0) {
+            var div = '<div id="' + section.id + '" class="SPM-section-added section_holder"></div>';
+            var index = 0;
+            if ($("#starred_div").length > 0) {
+                var index = 1;
+            }
+            $("#channels_scroller").children().eq(index).before(div);
         }
-        $("#channels_scroller").children().eq(index).before(div);
 
         this.template.update(section.id, {
             channels: section.channels,

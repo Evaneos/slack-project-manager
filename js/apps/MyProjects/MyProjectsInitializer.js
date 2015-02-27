@@ -61,7 +61,7 @@ var renderChannels = function() {
         });
     // 2 - Render the channels
         SPM.ViewHelpers.SectionRenderer.addSection("SPM-other_channe", "AUTRE CHANNELS", channel[0], false);
-        SPM.ViewHelpers.SectionRenderer.addSection("SPM-project", "MES PROJETS SUIVIS", channel[1], true);
+        SPM.ViewHelpers.SectionRenderer.addSection("SPM-project-followed", "MES PROJETS SUIVIS", channel[1], true);
         SPM.ViewHelpers.SectionRenderer.addSection("SPM-my_project_done", "MES PROJETS FINIS", myProjectsDone[0], true);
         SPM.ViewHelpers.SectionRenderer.addSection("SPM-project", "MES GRAINES", channel[2], true);
         SPM.ViewHelpers.SectionRenderer.addSection("SPM-my_project", "MES PROJETS", myProjectsDone[1], true);
@@ -73,6 +73,10 @@ SPM.Apps.MyProjects.MyProjectsInitializer = {
     init: function() {
         return waitUntilChannelsAreHere()
             .then(renderChannels);
+    },
+
+    updateProject: function(project) {
+        renderChannels();
     }
 }
 

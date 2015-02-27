@@ -162,11 +162,15 @@
     height: 18px;
     text-align: right;
     position: absolute;
-    right: 5px;
-    top: 0px;
+    right: 4px;
+    top: -1px;
     margin: 0;
     transform: scale(1);
     width: 25px;
+    background-color: #F9F3EB;
+    border-radius: 3px;
+    text-align: center;
+    color: #AB9BA9;
 }
 
 .SPM-desc {
@@ -206,22 +210,22 @@
 }
 
 body:not(.SPM-not-show-all) .section_holder h2:not(#channels_header)::after {
-content: " -";
+content: " +";
 cursor: pointer;
 pointer-events: all;
 }
 
 body:not(.SPM-not-show-all) .section_holder h2.SPM-plus:not(#channels_header)::after {
-    content: " +";
+    content: " -";
 }
 
 #flex_contents #project_container .heading {
     border-bottom: 0;
 }
 
-.SPM-only-unread ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads),
-.SPM-only-unread ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-project-informations
- {
+.section_holder:not(.SPM-only-unread) ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads),
+.section_holder:not(.SPM-only-unread) ul li:not(.unread):not(.active):not(.show_in_list_even_though_no_unreads) + .SPM-project-informations
+{
     display: none;
 }
 

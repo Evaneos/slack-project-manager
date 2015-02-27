@@ -1,0 +1,33 @@
+<html>
+<head>
+<script src="../vendors/jquery-1.7.1.min.js"></script>
+<script src="../vendors/trello.js"></script>
+<script src="../js/connectors/TrelloConnector.js"></script>
+<script type="text/javascript">
+SPM.TrelloConnector.initConnection().then(function() {
+    /*
+    Trello.post("webhooks", {
+      description: "My first webhook",
+      callbackURL: "http://www.mywebsite.com/trelloCallback",
+      idModel: "4d5ea62fd76aa1136000000c",
+    });
+    */
+    return SPM.TrelloConnector.request("post","/webhooks", {
+      description: "My first webhook",
+      callbackURL: "https://trello.firebaseio.com/test.json",
+      idModel: "54b94910f186c08595048a8f"
+    })
+    .then(function(result) {
+        console.log('ok');
+    }.bind(this))
+    .catch(function() {
+        console.log(arguments);
+    });
+})
+</script>
+</head>
+<body>
+
+</body>
+
+</html>

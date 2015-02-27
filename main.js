@@ -11,6 +11,7 @@ SPM.Initializer = {
     * Let's go!
     */
     currentProjectName: null,
+    date: moment(),
     init: function() {
         this.initDate();
         SPM.TrelloConnector
@@ -31,6 +32,26 @@ SPM.Initializer = {
             .catch(function (error) {
                 console.error(error);
             })
+
+        var myFirebaseRef = new Firebase("https://trello.firebaseio.com/");
+        myFirebaseRef.child("projects")
+        .on("child_added", function(snapshot) {
+            this.update(snapshot.val().id, snapshot.val().updated_at);
+        }.bind(this));
+        myFirebaseRef.child("projects")
+        .on("child_changed", function(snapshot) {
+            this.update(snapshot.val().id, snapshot.val().updated_at);
+        }.bind(this));
+    },
+    update: function(id, date) {
+        if (this.date.isBefore(moment(date))) {
+            SPM.Models.ProjectManager.findById(id).then(function(project) {
+                SPM.Apps.ProjectPanel.PanelInitalizer.updateProject(project);
+                SPM.Apps.MyProjects.MyProjectsInitializer.updateProject(project);
+            })
+        } else {
+            return false;
+        }
     },
     initDate: function() {
 

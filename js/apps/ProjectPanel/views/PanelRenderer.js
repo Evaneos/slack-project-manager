@@ -40,6 +40,13 @@ SPM.PanelRenderer = {
             this.addTitle(SPM.Utils.getDueDate(this.project.due), this.project.name);
         }
 
+        if (this.project.errors && this.project.errors.moreThanOneTrelloCard) {
+            var projects = _.reduce(this.project.errors.moreThanOneTrelloCard, function(memo, project) {
+                return memo + ' - '+ project.name;
+            }, "");
+            this.addError('Plusieurs projets pointent vers cette discussion Slack: ' + projects);
+        }
+
 
 
         SPM.Utils
@@ -53,7 +60,8 @@ SPM.PanelRenderer = {
     renderNoProject: function() {
         this.reset();
         this.closePanel();
-        this.addError();
+        this.addError('Vous devez créer une carte Trello (si ce n\'est pas déjà fait) et renseigner ce channel slack.\
+                        <a id="SPM-copy-slack-chan" href="#"> Voir le lien.</a></span>');
     },
 
     reset: function() {
@@ -86,10 +94,8 @@ SPM.PanelRenderer = {
     errorDiv: null,
     addError: function(message) {
         var dom = '<div id="SPM-notif" class="messages_banner"> \
-                    <span id="SPM-chan-error" class="overflow-ellipsis"> \
-                        Vous devez créer une carte Trello (si ce n\'est pas déjà fait) et renseigner ce channel slack.\
-                        <a id="SPM-copy-slack-chan" href="#"> Voir le lien.</a>\</span>\
-                </div>'
+                    <span id="SPM-chan-error" class="overflow-ellipsis"> ' + message + '\
+                </div>';
         this.errorDiv = $(dom).insertBefore("#messages_unread_status");
         var chanName = SPM.Utils.getProjectNameFromUrl(document.URL)
         SPM.CodeInjector.injectCode('\

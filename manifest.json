@@ -3,7 +3,7 @@
 
     "name": "Slack Project Manager",
     "description": "This extension makes the link between trello and slack",
-    "version": "0.12",
+    "version": "0.22",
     "permissions": [
         "http://*/*",
         "https://*/*",
@@ -14,6 +14,8 @@
             "matches": ["https://*.slack.com/*"],
             "css": ["css/style.css"],
             "js": [
+
+                "vendors/firebase.js",
                 "vendors/jquery-1.7.1.min.js",
                 "vendors/underscore-min.js",
                 "vendors/trello.js",

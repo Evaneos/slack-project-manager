@@ -67,6 +67,7 @@ var initProject = function(project) {
     // Capitalize first letter
     project.name = project.name.charAt(0).toUpperCase() + project.name.slice(1);
     checkErrors(project);
+    SPM.Storages.ProjectStorage.saveProject(project);
     return project;
 };
 
@@ -97,11 +98,21 @@ SPM.Models.ProjectManager = {
             } else {
                 cards.forEach(function (card) {
                     initProject(card)
-                    SPM.Storages.ProjectStorage.saveProject(card);
                 })
             }
             return cards;
         }.bind(this));
+    },
+
+    findById: function(id) {
+        return SPM.TrelloConnector.request("get", "/cards/" + id, {
+            "members": true,
+            "filter": "open"
+        }).then(function (card) {
+            // filter cards to keep only the one in the orga board
+            initProject(card);
+            return card;
+        });
     },
 
     findMyProjects: function () {
@@ -115,8 +126,11 @@ SPM.Models.ProjectManager = {
                 .filter(function (card) {
                     return SPM.Models.BoardManager.isRegistredBoard(card.idBoard);
                 })
-                .map(initProject)
-            return SPM.Storages.ProjectStorage.saveMyProjects(cards)
+                .map(initProject);
+            this.myProjects = true;
+            return SPM.Storages.ProjectStorage.getProjectsByUser(SPM.Models.MemberManager.me);
+        }).catch(function() {
+            console.warn("no data findMyProjects");
         });
     },
 
@@ -127,7 +141,10 @@ SPM.Models.ProjectManager = {
                     return project.slack == channelName
                 });
                 if (projects.length > 1) {
-                    console.warn("More than one Trello cards found for the project " + channelName, project.cards);
+                    console.warn("More than one Trello cards found for the project " + channelName);
+                    _.map(projects, function(project) {
+                        project.errors.moreThanOneTrelloCard = projects;
+                    });
                 }
                 if (projects.length == 0) {
                     console.warn("No Trello cards found for the project " + channelName);
@@ -139,9 +156,17 @@ SPM.Models.ProjectManager = {
                 return projects;
             });
     },
-
+    myProjects: false,
     getMyProjects: function () {
-        return SPM.Storages.ProjectStorage.getMyProjects()
+        var myProjects = SPM.Storages.ProjectStorage.getProjectsByUser(SPM.Models.MemberManager.me);
+        if (!this.myProjects || myProjects.length == 0) {
+            return this.findMyProjects().then(function(projects) {
+                return Promise.resolve(SPM.Storages.ProjectStorage.getProjectsByUser(SPM.Models.MemberManager.me));
+            })
+        } else {
+            return Promise.resolve(myProjects);
+        }
+        return SPM.Storages.ProjectStorage.getProjectsByUser(SPM.Models.MemberManager.me)
             .catch(function () {
                 return this
                     .findMyProjects()
