@@ -121,6 +121,8 @@
     cursor: pointer;
     color: #555459;
     font-weight: 900;
+    background-color: white;
+    padding-left: 3px;
 }
 
 #active_channel_name .name.SPM-title.error {

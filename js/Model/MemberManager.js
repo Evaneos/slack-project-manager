@@ -1,12 +1,12 @@
 var SPM = SPM || {};
-SPM.Models = SPM.Models || {};
+SPM.Model = SPM.Model || {};
 
-SPM.Models.MemberManager = {
+SPM.Model.MemberManager = {
     me: null,
     setMe: function() {
         return new Promise(function(success, error){
             if (this.me == null) {
-                SPM.TrelloConnector.request("get","/members/me").then(function(me) {
+                SPM.connector.TrelloConnector.request("get","/members/me").then(function(me) {
                     this.me = me;
                     success();
                 }.bind(this));

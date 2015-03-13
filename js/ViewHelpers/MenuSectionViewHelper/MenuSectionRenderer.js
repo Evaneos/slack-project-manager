@@ -1,27 +1,27 @@
 var SPM = SPM || {};
 SPM.ViewHelpers = SPM.ViewHelpers || {};
 
-SPM.ViewHelpers.SectionRenderer = {
+var _sections = {};
+var _initialized = false;
 
-    sections: [],
+SPM.ViewHelpers.SectionRenderer = {
 
     addSection: function(id, title, channels, isProjectSection) {
         // First use, initialize
-        if (this.sections.length == 0) {
+        if (_initialized == false) {
             this._initialize();
         }
 
-
         // create object section
         // @todo replace by class
-        var section = _.find(this.sections, function(s) { return s.id == id}) || {};
+        var section = _.find(_sections, function(s) { return s.id == id}) || {};
         section.title = title;
         section.isProjectSection = isProjectSection;
         section.channels = channels;
         section.id = id;
 
         // add it to the sections
-        this.sections.push(section);
+        _sections[id] =  section;
 
         // add dom
         this.addSectionDivIfNotExist(section);
@@ -30,6 +30,7 @@ SPM.ViewHelpers.SectionRenderer = {
     },
 
     _initialize: function() {
+        _initialized = true;
         this.initTemplate();
         SPM.CodeInjector.injectFile("js/ViewHelpers/MenuSectionViewHelper/menuSectionInjectedCode.js");
 
@@ -39,9 +40,9 @@ SPM.ViewHelpers.SectionRenderer = {
     },
 
     update: function(section) {
-        for (var i = 0 ; i < this.sections.length ; i++) {
-            this.updateMenuItem(this.sections[i]);
-        }
+        _.each(_sections, function(section) {
+            this.updateMenuItem(section);
+        }.bind(this));
     },
 
 

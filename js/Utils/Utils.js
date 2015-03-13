@@ -86,6 +86,32 @@ SPM.Utils = {
 
         // pass in the target node, as well as the observer options
         observer.observe(target, config);
+    },
+
+    removeFromArray: function(key, array) {
+        var index = array.indexOf(key);
+        if (index > -1) {
+            array.splice(index, 1);
+            return true;
+        }
+        return false;
+    },
+
+    removeFromObject: function(key, object) {
+        if (object.hasOwnProperty(key)) {
+            delete object[key];
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    isArray: function(array) {
+        if( Object.prototype.toString.call( array ) === '[object Array]' ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

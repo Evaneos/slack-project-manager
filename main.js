@@ -1,11 +1,46 @@
+
 var SPM = SPM || {};
-        console.log("-6")
+
+(function() {
+
+
+var _boardsIds = {
+    arborium: "54b94910f186c08595048a8f",
+    seeds: "54b7c3955fdb8e63ba5819d8"
+}
+
+var _connector = null;
+var _builder = null;
+
+
+var _trelloProjectReader = null;
+var _projectStorage = null;
+var _projectManager = null;
+var _buildModel = function() {
+
+    _builder = SPM.Model.Project.TrelloProjectBuilder;
+    _builder.setUtils(SPM.Utils);
+
+    // Build storages
+    _trelloProjectReader = SPM.Model.Project.TrelloProjectReader;
+    _trelloProjectReader.setTrelloConnector(_connector);
+    _trelloProjectReader.setProjectBuilder(_builder);
+
+    _projectStorage = SPM.Model.Project.ProjectStorage;
+    _projectStorage.setMe(SPM.Model.MemberManager.me);
+    _projectStorage.setUtils(SPM.Utils);
+
+    // build manager
+    _projectManager = SPM.Model.Project.ProjectManager;
+    _projectManager.addStorage(_projectStorage);
+    _projectManager.addStorage(_trelloProjectReader);
+
+    return _trelloProjectReader.setBoards(_boardsIds);
+
+
+}
 
 SPM.Initializer = {
-    boardsIds: {
-        arborium: "54b94910f186c08595048a8f",
-        seeds: "54b7c3955fdb8e63ba5819d8"
-    },
 
     /**
     * Let's go!
@@ -13,17 +48,19 @@ SPM.Initializer = {
     currentProjectName: null,
     date: moment(),
     init: function() {
-        this.initDate();
-        SPM.TrelloConnector
+        _connector = SPM.connector.TrelloConnector;
+        _connector
             .initConnection()
             .then(function() {
-                return SPM.Models.MemberManager.setMe();
+                return SPM.Model.MemberManager.setMe();
             }.bind(this))
             .then(function() {
-                return SPM.Models.BoardManager.init(this.boardsIds);
-            }.bind(this))
-            .then(function () {
+                return _buildModel.apply(this);
+            })
+            .then(function() {
+                SPM.PanelRenderer.setBoards(_trelloProjectReader.getBoards());
                 SPM.Apps.ProjectPanel.PanelInitalizer.init();
+                SPM.Apps.MyProjects.MyProjectsInitializer.setBoardIds(_boardsIds);
                 SPM.Apps.MyProjects.MyProjectsInitializer.init();
                 SPM.Apps.ToggleMenu.ToggleMenuInitializer.init();
                 //SPM.Apps.CheckTrelloSlack.CheckTrelloSlackInitializer.init();
@@ -45,37 +82,19 @@ SPM.Initializer = {
     },
     update: function(id, date) {
         if (this.date.isBefore(moment(date))) {
-            SPM.Models.ProjectManager.findById(id).then(function(project) {
+            SPM.Model.Project.ProjectManager.updateProjectById(id).then(function(project) {
                 SPM.Apps.ProjectPanel.PanelInitalizer.updateProject(project);
                 SPM.Apps.MyProjects.MyProjectsInitializer.updateProject(project);
             })
         } else {
             return false;
         }
-    },
-    initDate: function() {
-
-        moment.locale("fr");
-        moment.locale('fr', {
-            relativeTime : {
-                future: "%s",
-                past:   "%s",
-                s:  "J",
-                m:  "J",
-                mm: "J",
-                h:  "J",
-                hh: "J",
-                d:  "J-1",
-                dd: "J-%d",
-                M:  "M-1",
-                MM: "M-%d",
-                y:  "Y-1",
-                yy: "Y-%d"
-            }
-        });
     }
 }
 
 window.onload = function() {
     SPM.Initializer.init();
 }
+
+
+})();

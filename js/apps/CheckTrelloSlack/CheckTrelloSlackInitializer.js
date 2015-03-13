@@ -4,7 +4,7 @@
 
 // SPM.Apps.CheckTrelloSlack.CheckTrelloSlackInitializer = {
 //     init: function() {
-//         SPM.Models.ProjectManager.getMyProjectsInArborium().then(function(projects) {
+//         SPM.Model.Project.ProjectManager.getMyProjectsInArborium().then(function(projects) {
 //             if (projects.length > 0) {
 //                 projectsWithoutSlack = _.filter(projects, function(project) {
 //                     return !project.slack;

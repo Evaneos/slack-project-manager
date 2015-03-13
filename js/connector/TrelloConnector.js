@@ -1,5 +1,10 @@
+
 var SPM = SPM || {};
-SPM.TrelloConnector = {
+
+(function() {
+
+SPM.connector = SPM.connector || {};
+SPM.connector.TrelloConnector = {
     initConnection: function(success, error) {
         return new Promise(function(success, error) {
             Trello.authorize({
@@ -31,3 +36,5 @@ SPM.TrelloConnector = {
         })
     }
 };
+
+})();

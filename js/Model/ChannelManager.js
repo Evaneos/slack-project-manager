@@ -1,7 +1,7 @@
 var SPM = SPM || {};
-SPM.Models = SPM.Models || {};
+SPM.Model = SPM.Model || {};
 
-SPM.Models.ChannelManager = {
+SPM.Model.ChannelManager = {
     channelNames: [],
     getChannelNames: function() {
         this.initChannels();
@@ -38,7 +38,7 @@ SPM.Models.ChannelManager = {
                 return $(a).attr("data-channel-id");
             });
 
-            this.channelNames = $.map($("#channel-list li .overflow-ellipsis, #starred-list li a.channel_name .overflow-ellipsis"), function(li, index) {
+            this.channelNames = $.map($("#channel-list li a.channel_name .overflow_ellipsis, #starred-list li a.channel_name .overflow_ellipsis"), function(li, index) {
                 return $(li).text().replace(/(\r\n|\n|\r|\s+)/gm,"").slice(1);
             });
 

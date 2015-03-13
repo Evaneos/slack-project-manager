@@ -3,7 +3,7 @@
 
     "name": "Slack Project Manager",
     "description": "This extension makes the link between trello and slack",
-    "version": "0.22",
+    "version": "0.31",
     "permissions": [
         "http://*/*",
         "https://*/*",
@@ -26,18 +26,18 @@
                 "/js/Utils/Utils.js",
                 "/js/Utils/UrlChanged.js",
 
-                "/js/Models/BoardManager.js",
-                "/js/Models/ChannelManager.js",
-                "/js/Models/MemberManager.js",
-                "/js/Models/ProjectManager.js",
+                "/js/Model/ChannelManager.js",
+                "/js/Model/MemberManager.js",
+                "/js/Model/Project/ProjectManager.js",
+                "/js/Model/Project/TrelloProjectBuilder.js",
+                "/js/Model/Project/ProjectStorage.js",
+                "/js/Model/Project/TrelloProjectReader.js",
 
-                "/js/Models/ProjectManager.js",
-                "/js/Storages/ProjectStorage.js",
 
                 "/js/ViewHelpers/MenuSectionViewHelper/MenuSectionRenderer.js",
                 "/js/ViewHelpers/EmojiRenderer.js",
 
-                "/js/connectors/TrelloConnector.js",
+                "/js/connector/TrelloConnector.js",
 
                 "/js/apps/ProjectPanel/PanelInitializer.js",
                 "/js/apps/ProjectPanel/views/PanelRenderer.js",

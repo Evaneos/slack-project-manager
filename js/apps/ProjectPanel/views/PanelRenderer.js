@@ -41,7 +41,7 @@ SPM.PanelRenderer = {
         }
 
         if (this.project.errors && this.project.errors.moreThanOneTrelloCard) {
-            var projects = _.reduce(this.project.errors.moreThanOneTrelloCard, function(memo, project) {
+            var projects = this.project.errors.moreThanOneTrelloCard.reduce(function(memo, project) {
                 return memo + ' - '+ project.name;
             }, "");
             this.addError('Plusieurs projets pointent vers cette discussion Slack: ' + projects);
@@ -80,7 +80,7 @@ SPM.PanelRenderer = {
 
         this.template.update("projects_tab", {
             project: this.project,
-            boards: SPM.Models.BoardManager.boards
+            boards: this.boards
         });
     },
     titleDiv: null,
@@ -100,9 +100,8 @@ SPM.PanelRenderer = {
         var chanName = SPM.Utils.getProjectNameFromUrl(document.URL)
         SPM.CodeInjector.injectCode('\
                 $("#SPM-copy-slack-chan").click(function() {\
-                    window.prompt("Copier ce texte dans la description de la carte slack", "\\n**Slack** : [' +
-                        chanName + '](https://evaneos.slack.com/messages/' +
-                        'p-chartioprod](https://evaneos.slack.com/messages/' + chanName + ')\\n\\n");\
+                window.prompt("Ctrl + C et puis copier dans la description de la carte slack", "\\n**Slack** : [' +
+                chanName + '](https://evaneos.slack.com/messages/' + chanName + ')\\n\\n");\
                 });\
         ');
     },

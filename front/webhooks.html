@@ -4,7 +4,7 @@
 <script src="../vendors/trello.js"></script>
 <script src="../js/connectors/TrelloConnector.js"></script>
 <script type="text/javascript">
-SPM.TrelloConnector.initConnection().then(function() {
+SPM.connector.TrelloConnector.initConnection().then(function() {
     /*
     Trello.post("webhooks", {
       description: "My first webhook",
@@ -12,7 +12,7 @@ SPM.TrelloConnector.initConnection().then(function() {
       idModel: "4d5ea62fd76aa1136000000c",
     });
     */
-    return SPM.TrelloConnector.request("post","/webhooks", {
+    return SPM.connector.TrelloConnector.request("post","/webhooks", {
       description: "My first webhook",
       callbackURL: "https://trello.firebaseio.com/test.json",
       idModel: "54b94910f186c08595048a8f"
